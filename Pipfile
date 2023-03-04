@@ -9,6 +9,8 @@ djangorestframework = "*"
 python-decouple = "*"
 pytest = "*"
 psycopg2-binary = "*"
+pytest-django = "*"
+pybase62 = "*"
 
 [dev-packages]
 black = "*"
