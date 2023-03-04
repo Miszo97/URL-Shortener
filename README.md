@@ -2,9 +2,11 @@
 Simple url shortener
 
 # Setup
-
-cp .env.example > .env
-
+```
+git clone https://github.com/Miszo97/URL-Shortener.git
+cd URL-Shortener
+cp .env.example .env
+```
 # Run
 
 docker-compose up
