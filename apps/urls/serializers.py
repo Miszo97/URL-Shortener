@@ -5,11 +5,15 @@ from django.core.validators import URLValidator
 from rest_framework import serializers
 from rest_framework.serializers import ValidationError
 
+from apps.urls.models import ShortUrl
 
-class UrlSerializer(serializers.Serializer):
-    url = serializers.CharField(required=True, validators=[URLValidator()])
 
-    def validate_url(self, value):
+class UrlSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ShortUrl
+        fields = ["original_url"]
+
+    def validate_original_url(self, value):
         parsed_url = urlparse(value)
         domain_name = parsed_url.netloc.split(":")[0]
         if domain_name == config("DOMAIN_NAME"):
