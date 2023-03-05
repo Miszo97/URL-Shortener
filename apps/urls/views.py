@@ -7,6 +7,7 @@ from apps.urls.models import ShortUrl
 from apps.urls.serializers import UrlSerializer
 from apps.urls.utils.generate_code import generate_code
 
+from url_shortener.settings import CODE_SIZE
 
 class ShortenView(APIView):
     def post(self, request):
@@ -15,7 +16,7 @@ class ShortenView(APIView):
 
         url = serializer.validated_data["original_url"]
 
-        code = generate_code(url, size=7)
+        code = generate_code(url, size=CODE_SIZE)
         shortened_url = f'{config("DOMAIN_NAME")}/{code}'
 
         # Warning! This may leads to collisions as two different urls hashes can have the same first 7 characters

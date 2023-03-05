@@ -56,6 +56,7 @@ Cons:
 
 - It is hard to scale such an application as we should coordinate the counter across multiple multiplier application instances, which can lead to a single point of failure
 - No entropy in urls. Consecutive urls look very similar to each other
+- race condition when fetching the current counter value
 
 ## Solution 3
 
@@ -68,7 +69,7 @@ Pros:
 Cons:
 
 - dealing with collisions
-
+- race condition when checking if a short URL already exists in the database
 
 ## Solution 4
 
@@ -87,16 +88,17 @@ Cons:
 
 ## Race conditons
 
-In cases 1 and 3, when dealing with collisions, we should be careful not to run into a data race condition. It will occur when two instances of the application try to check if the shortened URL already exists in the database at the same time.
+In cases 2 and 3, when dealing with collisions or when we fetch the counter value, we should be careful not to run into a data race condition. It will occur when two instances of the application try to check if the shortened URL already exists in the database at the same time.
 
 
 
 ## Features
 
-Regardless of choisen solution we can still add more features to the application:
+Regardless of the chosen solution, we can still add more features to the application:
 
 Proposed features:
 - Generating HTML with a redirecting link
 - Using a NoSQL database like MongoDB for better horizontal scalability and faster reads and  writes as there are not many relational lookups
 - Adding a user login to give additional features like a customized URL or a history of created urls
+- Adding an expiration date for short ulrs
 - Attacker prevention (someone can write a script to quickly populate the database)
