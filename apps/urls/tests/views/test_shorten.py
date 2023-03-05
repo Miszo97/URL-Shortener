@@ -9,6 +9,8 @@ from apps.urls.models import ShortUrl
 
 pytestmark = pytest.mark.django_db
 
+# Note:
+# The following test are written in Django way. In DDD aproach we would call it integration tests.
 
 def test_shorten_valid_url():
     client = APIClient()
@@ -19,12 +21,13 @@ def test_shorten_valid_url():
 
     created_url = ShortUrl.objects.all()[0]
     assert created_url.original_url == url
-
+    assert ShortUrl.objects.count() == 1
 
 def test_shorten_invalid_url():
     client = APIClient()
     response = client.post("/shorten/", {"url": "not_a_url"})
     assert response.status_code == status.HTTP_400_BAD_REQUEST
+    assert ShortUrl.objects.count() == 0
 
 
 @mock.patch.dict(os.environ, {"DOMAIN_NAME": "www.example.com"})
@@ -32,7 +35,7 @@ def test_user_shortens_service_domain_name():
     client = APIClient()
     response = client.post("/shorten/", {"url": "https://www.example.com/"})
     assert response.status_code == status.HTTP_400_BAD_REQUEST
-
+    assert ShortUrl.objects.count() == 0
 
 def test_same_url_always_shortened_to_same_code():
     client = APIClient()
