@@ -17,6 +17,6 @@ class UrlSerializer(serializers.ModelSerializer):
         parsed_url = urlparse(value)
         domain_name = parsed_url.netloc.split(":")[0]
         if domain_name == config("DOMAIN_NAME"):
-            raise ValidationError("This URL is not allowed.")
+            raise ValidationError("This domain is not allowed.")
 
         return value
