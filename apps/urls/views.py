@@ -10,13 +10,13 @@ from apps.urls.utils.generate_code import generate_code
 
 class ShortenView(APIView):
     def post(self, request):
-        serializer = UrlSerializer(data=request.data)
+        serializer = UrlSerializer(data={"original_url": request.data["url"]})
         serializer.is_valid(raise_exception=True)
 
-        url = serializer.validated_data["url"]
+        url = serializer.validated_data["original_url"]
 
         code = generate_code(url, size=7)
-        shortened_url = config("DOMAIN_NAME") + "/" + generate_code(url, size=7)
+        shortened_url = f'{config("DOMAIN_NAME")}/{code}'
 
         # Warning! This may leads to collisions as two different urls hashes can have the same first 7 characters
         # This can be addressed using a implementation with a counter where the code will always be unique
