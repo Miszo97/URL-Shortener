@@ -3,18 +3,22 @@
 
 Note: The project tends to be super minimalistic at the expense of cool features and security.
 
-# Setup
+## Setup
 ```
 git clone https://github.com/Miszo97/URL-Shortener.git
 cd URL-Shortener
 cp .env.example .env
 ```
-# Run
+## Start services
 ```
 docker-compose up
 ```
+## Run migrations
+```
+docker-compose exec -it web python manage.py migrate
+```
 
-# Try it 
+## Try it 
 
 Create a short url
 ```
